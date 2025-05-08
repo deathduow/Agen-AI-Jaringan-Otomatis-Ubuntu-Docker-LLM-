@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:15
+    container_name: cybersec_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: devlinux
+      POSTGRES_PASSWORD: zarvis123
+      POSTGRES_DB: arista-cyber
+    volumes:
+      - /media/it/01DBBF1A4D698EE0/db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+
+  influxdb:
+    image: influxdb:1.8
+    container_name: cybersec_influxdb
+    restart: always
+    volumes:
+      - /media/it/01DBBF1A4D698EE0/influxdb:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+  grafana:
+    image: grafana/grafana
+    container_name: cybersec_grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  grafana-storage:
