@@ -65,7 +65,28 @@ docker-compose up -d
 ```bash
 sudo systemctl start agen-ai.service
 ```
+devlinux@devlinux-A320M-S2H:~$ sudo systemctl cat agen-ai.service
+[sudo] password for devlinux:
+# /etc/systemd/system/agen-ai.service
+[Unit]
+Description=Agen AI Jaringan Otomatis
+After=network.target docker.service
+Requires=docker.service
 
+[Service]
+Type=simple
+WorkingDirectory=/home/devlinux/cybersec-agent
+ExecStart=/home/devlinux/cybersec-agent/venv/bin/python3 /home/devlinux/cybersec-agent/agents/network_sniffer.py
+Restart=always
+RestartSec=5
+User=devlinux
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+
+
+[Install]
+WantedBy=multi-user.target
+devlinux@devlinux-A320M-S2H:~$
 ---
 
 ## ⚙️ File .env Contoh
